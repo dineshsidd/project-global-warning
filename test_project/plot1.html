@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<head>  
+    <title>Bootstrap Visualization Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+<body style="overflow-x: hidden">
+    <!-- Image and text -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="./Instructions/Images/letter_d.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            Latitude
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+       
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link active" href="./index.html">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-item nav-link" href="./comparison.html">Comparison</a>
+              <a class="nav-item nav-link" href="./data.html">Data</a>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Plots
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="./plot1.html">Max Temperature</a>
+                    <a class="dropdown-item" href="./plot2.html">Humidity</a>
+                    <a class="dropdown-item" href="./plot3.html">Cloudiness</a>
+                    <a class="dropdown-item" href="./plot4.html">Wind-Speed</a>
+                  </div>
+                </li>
+            </div>
+          </div> 
+      </nav>
+
+  <div class="row p-l-20" style="background-color:#f8f9fa">
+      <div class="col-md-6 mainpage_p1">
+        <h3>Latitude vs. Max Temperature</h3>  
+        <hr>
+        <div>
+            <img src="./Instructions/Resources/assets/images/Fig1.png" height="350" width="550">
+        </div>
+        <br>
+
+        <div>It is clear that, there is no significant difference in the temperatures of 
+          the cities close to the equator i.e. till 20 degrees toward south & north. 
+          However, as we move far away from the equator, the figure clearly shows that the 
+          southern hemisphere has slightly higher temperatures than the northern hemisphere.
+        </div>
+      </div>
+      <div class="col-md-6 graphs">
+          <h3>Visualizations</h3>  
+          <hr>
+          <div style="width: 50%;float: left;">
+            <a class="image" href="./plot1.html">  <img style="border-style:solid" src="./Instructions/Resources/assets/images/Fig1.png" height="170" width="270"> </a>
+          </div>
+          <div style="width: 50%;float: left;">
+            <a class="image" href="./plot2.html">  <img src="./Instructions/Resources/assets/images/Fig2.png" height="170" width="270"> </a>
+          </div>
+          <div style="width: 50%;float: left;">
+            <a class="image" href="./plot3.html">  <img src="./Instructions/Resources/assets/images/Fig3.png" height="170" width="270"> </a>
+          </div>
+          <div style="width: 50%;float: left;">
+            <a class="image" href="./plot4.html">  <img src="./Instructions/Resources/assets/images/Fig4.png" height="170" width="270"> </a>
+          </div>
+      </div>
+  </div>
+
+
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">Copyright coding bootcamp 2019</span>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+</body>
