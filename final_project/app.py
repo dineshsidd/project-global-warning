@@ -61,9 +61,48 @@ def get_map_data():
         country]['AverageTemperature'].mean()})
     return jsonify(mean_temp)
 
-@app.route("/path")
-def get_os_path():
-    return os.path.join('../','resources') 
+
+@app.route("/sealevel")
+def get_sea_levels():
+    var_sealevels = pd.read_csv('static/resources/seaLevelData.csv')
+    var_sealevels = var_sealevels[['year', 'CSIRO_sea_level', 
+    'CSIRO - Lower error bound (inches)',
+       'CSIRO - Upper error bound (inches)']]
+    var_sealevels = var_sealevels.dropna()
+    
+    var_out = {
+        "x" : list(var_sealevels["year"]).copy(),
+        "y" : list(var_sealevels["CSIRO_sea_level"]).copy(),
+        "lb" : list(var_sealevels['CSIRO - Lower error bound (inches)']).copy(),
+        "ub" : list(var_sealevels['CSIRO - Upper error bound (inches)']).copy()
+    }
+    return jsonify(var_out)
+
+@app.route("/meanTemp")
+def get_mean_temp():
+    global_temp = pd.read_csv("static/resources/GlobalTemperatures.csv")
+    years = np.unique(global_temp['dt'].apply(lambda x: x[:4]))
+    mean_temp_world = []
+    mean_temp_world_upper = []
+    mean_temp_world_lower = []
+    for year in years:
+        mean_temp_world.append(global_temp[global_temp['dt'].apply(
+            lambda x: x[:4]) == year]['LandAverageTemperature'].mean())
+        mean_temp_world_upper.append(global_temp[global_temp['dt'].apply(
+                    lambda x: x[:4]) == year]['LandAverageTemperatureUncertainty'].mean() + global_temp[global_temp['dt'].apply(
+            lambda x: x[:4]) == year]['LandAverageTemperature'].mean() )
+        mean_temp_world_lower.append(global_temp[global_temp['dt'].apply(
+            lambda x: x[:4]) == year]['LandAverageTemperature'].mean() - global_temp[global_temp['dt'].apply(
+                    lambda x: x[:4]) == year]['LandAverageTemperatureUncertainty'].mean() )
+    
+    var_out = {
+        "x" : list(years),
+        "y" : mean_temp_world,
+        "lb" : mean_temp_world_lower,
+        "ub" : mean_temp_world_upper
+    }
+    return jsonify(var_out)
+
 
 if __name__ == "__main__":
     app.run()

@@ -9,23 +9,23 @@ console.log(queryUrl);
 // Perform a GET request to the query URL
 
 
-
-
-
-d3.json("/map").then(function(raw_data){
-  console.log(raw_data);
-  
-// for (let d=0 ; d< data.features; d++){
-//   data.features[d].properties.temp = raw_data.filter(c=> c.country === data.features[d].properties.name );
-// }
-});
-
 d3.json(queryUrl, function(data) {
-  
+  d3.json("/map",function(raw_data){
+    console.log(raw_data);
+    
+  for (let d=0 ; d< data.features.length; d++){
+    if (raw_data.filter(c=> c.country === data.features[d].properties.name ).length > 0) {
+    data.features[d].properties.temp = raw_data.filter(c=> c.country === data.features[d].properties.name )[0]["mean_temp"];
+    }
+    else{ data.features[d].properties.temp = 0}
+  }
+
   console.log(data);
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
-
+  
+});
+  
 });
 
 
@@ -62,7 +62,7 @@ function createFeatures(earthquakeData) {
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
-    layer.bindPopup("<h3>" + feature.properties.name+ "</h4>" );
+    layer.bindPopup("<h3>" + feature.properties.name+ "-" +feature.properties.temp+ "</h4>" );
   };
 
  
@@ -71,9 +71,8 @@ function createFeatures(earthquakeData) {
 
   var geojsonMarkerOptions = {
 //radius: 15,
-    color: "#000",
     weight: 1,
-    opacity: 1,
+    opacity: 0.1,
     fillOpacity: 0.5
 };
 
@@ -82,12 +81,11 @@ function createFeatures(earthquakeData) {
   var earthquakes = L.geoJSON(earthquakeData, {
 
     onEachFeature: onEachFeature,
-    style : {fillColor:"yellow", color:"yellow", opacity:0.1,weight:0}
-    //pointToLayer: function (feature, latlng) {
-      //geojsonMarkerOptions.radius = feature.properties.mag * 5 ;
-      //geojsonMarkerOptions.fillColor = getColor(1-(feature.properties.mag /5) ); //"#ff7800",
-      //return L.circleMarker(latlng, geojsonMarkerOptions);
-  //}
+    style : function (feature, latlng) {
+      geojsonMarkerOptions.fillColor = getColor(1-(feature.properties.temp /35) );
+      geojsonMarkerOptions.color = getColor(1-(feature.properties.temp /35) ); //"#ff7800",
+      return  geojsonMarkerOptions;
+  }
   });
 
   // Sending our earthquakes layer to the createMap function
@@ -144,8 +142,8 @@ function createMap(earthquakes) {
   legend.onAdd = function (map) {
   
       var div = L.DomUtil.create('div', 'info legend'),
-          grades = [0, .1, .2, .5,.6, .8, .9, 1],
-          grades2 = [0, 1, 1.5, 2,3, 3.5, 4, 5],
+          grades = [0, 0.1, .2, .5,.6, .8, .9, 1],
+          grades2 = [0, 15, 20, 25,30, 35, 40, 45],
           labels = [];
          div.innerHTML += '<p>Magnitude</p>' ;
       // loop through our density intervals and generate a label with a colored square for each interval
